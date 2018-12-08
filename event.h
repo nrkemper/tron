@@ -7,6 +7,8 @@
 
 #include <stdlib.h>
 
+#define EVNT_KEYPRESS	1
+
 typedef struct event_t
 {
 	int			type;

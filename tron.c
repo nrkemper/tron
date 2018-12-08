@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#include "key.h"
+/*
 typedef struct screen_t
 {	
 	int	_width, _height;
@@ -37,12 +39,14 @@ void R_RenderBuffer (WINDOW* des, screen_t* src)
 
 	for (y=0 ; y<src->_height ; y++)
 		for (x=0 ; x<src->_width ; x++)
-			wmvaddch (des, y, x, src->_buff[x][y]);
-
+		{
+			wmove (des, y, x);
+			waddch (des, src->_buff[x][y]);
+		}
 	wrefresh (des);
 }
 
-void InitilizeCurses
+void InitilizeCurses (void)
 {
 	initscr();
 	keypad (stdscr, TRUE);
@@ -61,12 +65,43 @@ void DestroyScreen ()
 
 	free (screen._buff);
 }
-
+*/
 int main (void)
 {
-	InitScreenBuffer ();
-	getch ();
-	DestroyScreen ();
-	endwin();
+	FILE* fp = fopen ("logs/log.txt", "w");
+	event_t event;
+	int cnt = 0;
+
+	if (fp == NULL)
+	{
+		printf ("ERROR: could not open log file\n");
+		exit (-1);
+	}
+
+	initscr ();
+	K_Init ();
+	EVNT_Init ();
+
+	while (1)
+	{
+		K_GetUserInput ();
+		
+		if (EVNT_GetNextEvent (&event) == 1)
+		{
+			fprintf (fp, "Event %d\n", cnt);
+			fprintf (fp, "----------\n");
+			fprintf (fp, "Type: %d\n", event.type);
+			fprintf (fp, "Arg 1: %d\n", event.arg1);
+			fprintf (fp, "Arg 2: %d\n", event.arg2);
+			fprintf (fp, "----------\n\n");
+
+			cnt++;
+		}
+	}
+
+	fclose (fp);
+	K_Shutdown ();
+	EVNT_Shutdown ();
+	endwin ();
 	return 0;
 }
