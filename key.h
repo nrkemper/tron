@@ -3,6 +3,9 @@
 
 #pragma once
 
+#include <ncurses.h>
+#include "event.h"
+
 #define K_TAB		9
 #define K_ENTER		10
 #define K_ESCAPE	27
@@ -32,9 +35,6 @@
 #define K_F10		147
 #define K_F11		148
 #define K_F12		149
-
-#include <ncurses.h>
-#include "event.h"
 
 void K_Init (void);
 int K_GetKey (void);

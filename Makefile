@@ -12,16 +12,11 @@ else
   OS=$(shell uname -s)-$(shell uname -r)
 endif
 
-
-
-
-
-
-
 CC=gcc
-BASE_FLAGS=-Wall -lncurses
+BASE_FLAGS=-Wall
 RELEASE_FLAGS:=$(BASE_FLAGS) 
 DEBUG_FLAGS:=$(BASE_FLAGS) -Wpadded
+LINK_FLAGS=-lncurses
 
 ifndef PREFIX
 BUILDDIR:=$(PWD)/Tron-$(OS)-$(ARCH)
@@ -35,15 +30,18 @@ LOG_DIR:=$(BUILDDIR)/log
 BIN_DIR:=$(BUILDDIR)/bin
 
 CSCRIPT=$(CC) $(CFLAGS) -c $< -o $(OBJ_DIR)/$@
+LSCRIPT=$(CC) $(LINK_FLAGS) $(OBJS) -o $(BIN_DIR)/tron
 
 TARGETS=event.o \
 	key.o \
 	mmanager.o \
+	entity.o \
 	tron.o
 
 OBJS=	$(OBJ_DIR)/event.o \
 	$(OBJ_DIR)/key.o \
 	$(OBJ_DIR)/mmanager.o \
+	$(OBJ_DIR)/entity.o \
 	$(OBJ_DIR)/tron.o
 
 all: build_release build_debug
@@ -54,7 +52,8 @@ build_release:
 		$(OBJ_DIR) \
 		$(BIN_DIR)
 	$(MAKE) $(TARGETS) CFLAGS=$(RELEASE_FLAGS)
-	$(CC) $(OBJS) -lncurses -o $(BIN_DIR)/tron
+	$(LSCRIPT)
+
 build_debug:
 
 
@@ -73,7 +72,8 @@ key.o: key.c
 mmanager.o: mmanager.c
 	$(CSCRIPT)
 
-
+entity.o: entity.c
+	$(CSCRIPT)
 #=======================
 #	Cleaning
 #=======================
