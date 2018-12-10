@@ -68,7 +68,7 @@ void DestroyScreen ()
 */
 int main (void)
 {
-	FILE* fp = fopen ("logs/log.txt", "w");
+	FILE* fp = fopen ("../log/log.txt", "w");
 	event_t event;
 	int cnt = 0;
 
