@@ -13,6 +13,7 @@ typedef struct event_t
 {
 	int			type;
 	int			arg1;
+	int			pad;
 	int 			arg2;
 	struct event_t* 	next;
 } event_t;
