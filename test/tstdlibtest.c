@@ -39,5 +39,76 @@ int main (void)
 	else
 		printf ("The two NEW NEW strings are completely different!\n");
 
+	
+	char colon[2] = ":";
+	char star[2] = "*";
+	char a[2] = "a";
+	char K[2] = "K";
+	char backslash[2] = "\\";
+
+	if (T_strcasecmp (colon, star) == 1)
+		printf ("Correct! The colon has a greater value than the star.\n");
+	else
+		printf ("Ugh oh! The colon is supposed to have a greater value than the star.\n");
+	
+	
+	if (T_strcasecmp (star, colon) == -1)
+		printf ("Correct! The star has a lesser value than the colon.\n");
+	else
+		printf ("Ugh oh! The star is supposed to have a lesser value than the colon.\n");
+	
+	if (T_strcasecmp (a, K) == -1)
+		printf ("Correct! 'a' has a lesser value than 'K'\n");
+	else
+		printf ("Ugh oh! 'a' is supposed to have a lesser value than 'K'\n");
+
+	if (T_strcasecmp (K, a) == 1)
+		printf ("Correct! 'K' has a greater value than 'a'\n");
+	else
+		printf ("Ugh oh! 'K' is supposed to have a greater value than 'a'\n");
+
+	if (T_strcasecmp (a, colon) == 1)
+		printf ("Correct! 'a' has a greater value than the colon\n");
+	else
+		printf ("Ugh oh! 'a' is supposed to have a greater value than the colon\n");
+
+	if (T_strcasecmp (colon, a) == -1)
+		printf ("Correct! The colon has a lesser value than 'a'\n");
+	else
+		printf ("Ugh oh! The colon is supposed to have a lesser value than 'a'\n");
+
+	if (T_strcasecmp (backslash, K) == 1)
+		printf ("Correct! The backslash is supposed to have a greater value than 'K'\n");
+	else 
+		printf ("Ugh oh! The backslash is supposed to have a greater value than 'K'\n");
+	
+	if (T_strcasecmp (K, backslash) == -1)
+		printf ("Correct! The backslash is supposed to have a greater value than 'K'\n");
+	else 
+		printf ("Ugh oh! The backslash is supposed to have a greater value than 'K'\n");
+	
+	if (T_strcasecmp (backslash, a) == -1)
+		printf ("Correct! 'a' is supposed to have a greater value than the backslash\n");
+	else 
+		printf ("Ugh oh! 'a' is supposed to have a greater value than the backslash\n");
+	
+	if (T_strcasecmp (a, backslash) == 1)
+		printf ("Correct! 'a' is supposed to have a greater value than the backslash\n");
+	else 
+		printf ("Ugh oh! 'a' is supposed to have a greater value than the backslash\n");
+	
+	if (T_strcasecmp (K, backslash) == -1)
+		printf ("Correct! 'K' is supposed to have a lesser value than the backslash.\n");
+	else
+		printf ("Ugh oh! 'K' is supposed to have a lesser value than the backslash.\n");
+
+	if (T_strcasecmp (backslash, K) == 1)
+		printf ("Correct! The backslash is supposed to have a greater value than 'K'.\n");
+	else
+		printf ("Ugh oh! The backslash is supposed to have a greater value than 'K'.\n");
+
+	T_memset (string, 0, T_strlen(string));
+
+	printf ("String: '%s'\n", string);
 	return 0;
 }

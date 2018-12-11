@@ -1,7 +1,7 @@
 #include <stdlib.h>
-#include <string.h>
 #include <stdio.h>
 #include "entity.h"
+#include "tstdlib.h"
 
 entity_t* 	entitylist;
 entity_t*	self;
@@ -18,27 +18,75 @@ void ENTY_Init (void)
 	vector_t x2 = { 20, 19 };
 	vector_t y2 = { 10, 10 };
 	
-	self = ENTY_NewEntity ("SELF", x1, y1, '^');
-	ENTY_NewEntity ("Jorge", x2, y2, '^');
+	self = ENTY_NewEntity ("SELF", x1, y1, ENTY_MOVE_SPEED, '^');
+	ENTY_NewEntity ("Jorge", x2, y2, ENTY_MOVE_SPEED, '^');
 }
 
 //creates a new entity and returns a pointer to the new entity
-entity_t* ENTY_NewEntity (const char* name, vector_t x, vector_t y, char icon)
+entity_t* ENTY_NewEntity (const char* name, vector_t x, vector_t y, int speed, char icon)
 {
 	entity_t* newEnt = malloc (sizeof (entity_t));
 
 	newEnt->x = x;
 	newEnt->y = y;
 	newEnt->id = numEntities++;
+	newEnt->speed = speed;
 	newEnt->icon = icon;
 
-	memset (newEnt->name, 0, MAX_NAME_LENGTH + 1);
-	strncpy (newEnt->name, name, MAX_NAME_LENGTH);
+	T_memset (newEnt->name, 0, MAX_NAME_LENGTH + 1);
+	T_strncpy (newEnt->name, name, MAX_NAME_LENGTH);
 
 	newEnt->next = entitylist;
 	entitylist = newEnt;
 
 	return newEnt;
+}
+
+void ENTY_UpdateEntity (entity_t* entity)
+{
+	if (entity->x.pf == entity->x.p0)
+	{
+		//travelling vertically
+		if (entity->y.pf > entity->y.p0)
+		{
+			//travelling down
+			entity->y.p0 = entity->y.pf;
+			entity->y.pf += entity->speed;
+		}
+		else
+		{
+			//travelling up
+			entity->y.p0 = entity->y.pf;
+			entity->y.pf -= entity->speed;
+		}
+	}
+	else
+	{
+		//travelling horizontally
+		if (entity->x.pf > entity->x.p0)
+		{
+			//travelling right
+			entity->x.p0 = entity->x.pf;
+			entity->x.pf += entity->speed;
+		}
+		else
+		{
+			//travelling left
+			entity->x.p0 = entity->x.pf;
+			entity->x.pf -= entity->speed;
+		}
+	}
+}
+
+void ENTY_UpdateEntities (void)
+{
+	entity_t*	p = entitylist;
+
+	while(p)
+	{
+		ENTY_UpdateEntity (p);
+		p=p->next;
+	}
 }
 
 void ENTY_DrawEntity (entity_t* entity)

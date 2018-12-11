@@ -19,4 +19,5 @@ int T_strcmp (const char* str1, const char* str2);
 int T_strncmp (const char* str1, const char* str2, int num);
 int T_strcasecmp (const char* str1, const char* str2);
 int T_strncasecmp (const char* str1, const char* str2, int num);
+void* T_memset (void* ptr, int value, unsigned int num);
 #endif

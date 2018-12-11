@@ -1,10 +1,6 @@
 #ifndef __KEY_H__
 #define __KEY_H__
-
 #pragma once
-
-#include <ncurses.h>
-#include "event.h"
 
 #define K_TAB		9
 #define K_ENTER		10
@@ -37,8 +33,7 @@
 #define K_F12		149
 
 void K_Init (void);
-int K_GetKey (void);
-int K_ProcessKey (int key);
+int K_CreateKeyEvent (int key);
 void K_GetUserInput (void);
 void K_Shutdown (void);
 

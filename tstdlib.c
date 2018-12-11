@@ -1,5 +1,5 @@
 #include "tstdlib.h"
-
+#define NULL	0
 /*
  *
  *
@@ -78,40 +78,77 @@ int T_strncmp (const char* str1, const char* str2, int num)
 
 int T_strcasecmp (const char* str1, const char* str2)
 {
+	char tmpch1, tmpch2;
+
 	while (*str1 && *str2)
 	{
-		if (*str1 < *str2)
+		tmpch1 = *str1;
+		tmpch2 = *str2;
+		if ((tmpch1 >= 'a' && tmpch1 <= 'z') || (tmpch1 >= 'A' && tmpch1 <= 'Z'))
 		{
-			if (*str2 >= 'a' && *str2 <= 'z')
+			if ((tmpch2 >= 'a' && tmpch2 <= 'z') || (tmpch2 >= 'A' && tmpch2 <= 'Z'))
 			{
-				if (*str1 < *str2 - 'a' + 'A')
-					return -1;
-			
-				if (*str1 > *str2 - 'a' + 'A')
-					return 1;
-			}
-			else
-				return -1;
+				if (tmpch1 >= 'a' && tmpch1 <='z')
+					tmpch1 = tmpch1 - 'a' + 'A';
 
+				if (tmpch2 >= 'a' && tmpch2 <= 'z')
+					tmpch2 = tmpch2 - 'a' + 'A';
+			}
 		}
 
-		if (*str1 > *str2)
-		{
-			if (*str1 >= 'a' && *str1 <= 'z')
-			{
-				if (*str1 - 'a' + 'A' < *str2)
-					return -1;
+		if (tmpch1 < tmpch2)
+			return -1;
 
-				if (*str1 - 'a' + 'A' > *str2)
-					return 1;
-			}
-			else
-				return 1;
-		}
+		if (tmpch1 > tmpch2)
+			return 1;
+
 		str1++;
 		str2++;
 	}
 	return 0;
 }
 
-int T_strncasecmp (const char* str1, const char* str2, int num);
+int T_strncasecmp (const char* str1, const char* str2, int num)
+{
+	char tmpch1, tmpch2;
+
+	while (*str1 && *str2 && num--)
+	{
+		tmpch1 = *str1;
+		tmpch2 = *str2;
+		if ((tmpch1 >= 'a' && tmpch1 <= 'z') || (tmpch1 >= 'A' && tmpch1 <= 'Z'))
+		{
+			if ((tmpch2 >= 'a' && tmpch2 <= 'z') || (tmpch2 >= 'A' && tmpch2 <= 'Z'))
+			{
+				if (tmpch1 >= 'a' && tmpch1 <='z')
+					tmpch1 = tmpch1 - 'a' + 'A';
+
+				if (tmpch2 >= 'a' && tmpch2 <= 'z')
+					tmpch2 = tmpch2 - 'a' + 'A';
+			}
+		}
+
+		if (tmpch1 < tmpch2)
+			return -1;
+
+		if (tmpch1 > tmpch2)
+			return 1;
+
+		str1++;
+		str2++;
+	}
+	return 0;
+}
+
+void* T_memset (void* ptr, int value, unsigned int num)
+{
+	if (ptr != NULL)
+	{
+		unsigned char* tmpp = ptr;
+		while (num--)
+		{
+			*tmpp++ = value;
+		}
+	}
+	return ptr;
+}

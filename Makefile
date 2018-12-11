@@ -36,13 +36,19 @@ TARGETS=event.o \
 	key.o \
 	mmanager.o \
 	entity.o \
-	tron.o
+	tstdlib.o \
+	sys_ncurses.o \
+	main_ncurses.o
+	#tron.o
 
 OBJS=	$(OBJ_DIR)/event.o \
 	$(OBJ_DIR)/key.o \
 	$(OBJ_DIR)/mmanager.o \
 	$(OBJ_DIR)/entity.o \
-	$(OBJ_DIR)/tron.o
+	$(OBJ_DIR)/tstdlib.o \
+	$(OBJ_DIR)/sys_ncurses.o \
+	$(OBJ_DIR)/main_ncurses.o
+	#$(OBJ_DIR)/tron.o
 
 all: build_release build_debug
 
@@ -73,6 +79,15 @@ mmanager.o: mmanager.c
 	$(CSCRIPT)
 
 entity.o: entity.c
+	$(CSCRIPT)
+
+tstdlib.o: tstdlib.c
+	$(CSCRIPT)
+
+sys_ncurses.o: sys_ncurses.c
+	$(CSCRIPT)
+
+main_ncurses.o: main_ncurses.c
 	$(CSCRIPT)
 #=======================
 #	Cleaning
