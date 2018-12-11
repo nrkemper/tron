@@ -31,6 +31,7 @@ entity_t* ENTY_NewEntity (const char* name, vector_t x, vector_t y, int speed, c
 	newEnt->y = y;
 	newEnt->id = numEntities++;
 	newEnt->speed = speed;
+	newEnt->updated = 0;
 	newEnt->icon = icon;
 
 	T_memset (newEnt->name, 0, MAX_NAME_LENGTH + 1);
@@ -44,38 +45,43 @@ entity_t* ENTY_NewEntity (const char* name, vector_t x, vector_t y, int speed, c
 
 void ENTY_UpdateEntity (entity_t* entity)
 {
-	if (entity->x.pf == entity->x.p0)
+	if (!entity->updated)
 	{
-		//travelling vertically
-		if (entity->y.pf > entity->y.p0)
+		if (entity->x.pf == entity->x.p0)
 		{
-			//travelling down
-			entity->y.p0 = entity->y.pf;
-			entity->y.pf += entity->speed;
+			//travelling vertically
+			if (entity->y.pf > entity->y.p0)
+			{
+				//travelling down
+				entity->y.p0 = entity->y.pf;
+				entity->y.pf += entity->speed;
+			}
+			else
+			{
+				//travelling up
+				entity->y.p0 = entity->y.pf;
+				entity->y.pf -= entity->speed;
+			}
 		}
 		else
 		{
-			//travelling up
-			entity->y.p0 = entity->y.pf;
-			entity->y.pf -= entity->speed;
+			//travelling horizontally
+			if (entity->x.pf > entity->x.p0)
+			{
+				//travelling right
+				entity->x.p0 = entity->x.pf;
+				entity->x.pf += entity->speed;
+			}
+			else
+			{
+				//travelling left
+				entity->x.p0 = entity->x.pf;
+				entity->x.pf -= entity->speed;
+			}
 		}
 	}
-	else
-	{
-		//travelling horizontally
-		if (entity->x.pf > entity->x.p0)
-		{
-			//travelling right
-			entity->x.p0 = entity->x.pf;
-			entity->x.pf += entity->speed;
-		}
-		else
-		{
-			//travelling left
-			entity->x.p0 = entity->x.pf;
-			entity->x.pf -= entity->speed;
-		}
-	}
+
+	entity->updated = 0;
 }
 
 void ENTY_UpdateEntities (void)

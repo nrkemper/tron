@@ -9,6 +9,7 @@
  *
  *
  */
+#define tboolean	unsigned char
 
 int T_strlen (const char* str);
 void T_strcpy (char* des, const char* src);

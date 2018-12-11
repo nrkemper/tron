@@ -101,13 +101,43 @@ void EVNT_ProcessEvent (event_t* event)
 		
 		case EVNT_JUMP:		break;
 		case EVNT_FIRE:		break;
+		
 		case EVNT_MVUP:
-			event->entity->x.pf = event->entity->x.p0;
-			event->entity->y.pf = event->entity->y.p0 - event->entity->speed;
+			if (event->entity->updated == 0)
+			{
+				event->entity->x.pf = event->entity->x.p0;
+				event->entity->y.pf = event->entity->y.p0 - event->entity->speed;
+
+				event->entity->updated = 1;
+			}
 		break;
-		case EVNT_MVDOWN:	break;
-		case EVNT_MVLEFT:	break;
-		case EVNT_MVRIGHT:	break;
+
+		case EVNT_MVDOWN:	
+			if (event->entity->updated == 0)
+			{
+				event->entity->x.pf = event->entity->x.p0;
+				event->entity->y.pf = event->entity->y.p0 + event->entity->speed;
+				event->entity->updated = 1;
+			}
+		break;
+
+		case EVNT_MVLEFT:	
+			if (event->entity->updated == 0)
+			{
+				event->entity->x.pf = event->entity->x.p0 - event->entity->speed;
+				event->entity->y.pf = event->entity->y.p0;
+				event->entity->updated = 1;
+			}
+		break;
+		
+		case EVNT_MVRIGHT:
+			if (event->entity->updated == 0)
+			{
+				event->entity->x.pf = event->entity->x.p0 + event->entity->speed;
+				event->entity->y.pf = event->entity->y.p0;
+			}
+		break;
+	
 		case EVNT_BOOST:	break;
 		case EVNT_COLLISION:	break;
 		case EVNT_QUIT:

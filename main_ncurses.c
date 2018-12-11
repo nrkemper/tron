@@ -9,9 +9,9 @@ int main (int argc, char* argv[])
 	
 	while (1)
 	{
-		ENTY_UpdateEntities ();
 		K_GetUserInput ();
 		EVNT_ProcessEvents ();
+		ENTY_UpdateEntities ();
 		//detect collisions
 		//draw frame
 	}
