@@ -6,6 +6,8 @@
 #define MAX_NAME_LENGTH	16
 #define ENTY_MOVE_SPEED	1
 
+#include "tstdlib.h"
+
 typedef struct vector_t
 {
 	int	pf, p0;
@@ -17,6 +19,7 @@ typedef struct entity_t
        	vector_t		y; 
 	int 			id;
 	int			speed;
+	tboolean		updated;
 	char			name[MAX_NAME_LENGTH + 1];
 	char			icon;
 	struct entity_t*	next;
