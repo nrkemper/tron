@@ -4,6 +4,7 @@
 #include "event.h"
 #include <ncurses.h>
 #include <stdlib.h>
+#include <sys/time.h>
 /*
  *
  * 	System dependent functions
@@ -77,21 +78,28 @@ int Sys_ProcessKey (int key)
 	return -1;
 }
 
-int Sys_GetTime (void)
+double Sys_GetTime (void)
 {
-	//static int basesec;
+	static int 	secbase;
+	struct timeval	tv;
+	struct timezone	tz;
 
-	//if
-	return 0; 
+	gettimeofday (&tv, &tz);
+
+	if (!secbase)
+	{
+		secbase = tv.tv_sec;
+		return tv.tv_usec / 1000000.0;
+	}
+
+	return tv.tv_sec - secbase + (tv.tv_usec / 1000000.0);
 }
+
 void Sys_Shutdown (void)
 {
-	FILE* fp = fopen ("Log.txt", "w");
-	fprintf (fp, "Beginning shutdown\n");
 	endwin ();
 	EVNT_Shutdown ();
 	ENTY_Shutdown ();
 	K_Shutdown ();
-	fclose (fp);
 	exit (0);
 }

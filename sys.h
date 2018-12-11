@@ -11,5 +11,6 @@
 void Sys_Init ();
 int Sys_GetKey (void);
 int Sys_ProcessKey (int key);
+double Sys_GetTime (void);
 void Sys_Shutdown (void);
 #endif

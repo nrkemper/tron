@@ -38,6 +38,7 @@ TARGETS=event.o \
 	entity.o \
 	tstdlib.o \
 	sys_ncurses.o \
+	draw.o \
 	main_ncurses.o
 	#tron.o
 
@@ -47,6 +48,7 @@ OBJS=	$(OBJ_DIR)/event.o \
 	$(OBJ_DIR)/entity.o \
 	$(OBJ_DIR)/tstdlib.o \
 	$(OBJ_DIR)/sys_ncurses.o \
+	$(OBJ_DIR)/draw.o \
 	$(OBJ_DIR)/main_ncurses.o
 	#$(OBJ_DIR)/tron.o
 
@@ -86,6 +88,9 @@ tstdlib.o: tstdlib.c
 	$(CSCRIPT)
 
 sys_ncurses.o: sys_ncurses.c
+	$(CSCRIPT)
+
+draw.o: draw.c
 	$(CSCRIPT)
 
 main_ncurses.o: main_ncurses.c
