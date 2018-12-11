@@ -1,5 +1,43 @@
 #include "key.h"
+#include "event.h"
+#include "entity.h"
+#include "sys.h"
+#include <ncurses.h>
+/*
+ *
+ *
+#define K_TAB		9
+#define K_ENTER		10
+#define K_ESCAPE	27
+#define K_SPACE		32
 
+#define K_BACKSPACE	127
+#define K_INSERT	128
+#define K_DELETE	129
+#define K_HOME		130
+#define K_END		131
+#define K_PGUP		132
+#define K_PGDOWN	133
+#define K_UPARROW	134
+#define K_DOWNARROW	135
+#define K_LEFTARROW	136
+#define K_RIGHTARROW	137
+
+#define K_F1		138
+#define K_F2		139
+#define K_F3		140
+#define K_F4		141
+#define K_F5		142
+#define K_F6		143
+#define K_F7		144
+#define K_F8		145
+#define K_F9		146
+#define K_F10		147
+#define K_F11		148
+#define K_F12		149
+
+ *
+ * */
 void K_Init (void)
 {
 	noecho ();
@@ -8,63 +46,39 @@ void K_Init (void)
 	nodelay (stdscr, TRUE);
 }
 
-int K_GetKey (void)
+//FIXME: needs to be updated for key bindings
+int K_CreateKeyEvent (int key)
 {
-	return wgetch (stdscr);
-}
-
-int K_ProcessKey (int key)
-{
+	int ret=0;
 	switch (key)
 	{
-		case 9:			return K_TAB;		break;
-		
-		case KEY_ENTER:
-		case 10:		return K_ENTER;		break;
-		
-		case KEY_EXIT:
-		case 27:		return K_ESCAPE;	break;
-		
-		case 32:		return K_SPACE;		break;
-		
-		case KEY_BACKSPACE:	
-		case 127:		return K_BACKSPACE;	break;
-		
-		case KEY_IC:		return K_INSERT;	break;
-		case KEY_DC:		return K_DELETE;	break;
-		case KEY_HOME:		return K_HOME;		break;
-		case KEY_END:		return K_END;		break;
-		case KEY_PPAGE:		return K_PGUP;		break;
-		case KEY_NPAGE:		return K_PGDOWN;	break;
-		case KEY_UP:		return K_UPARROW; 	break;
-		case KEY_DOWN:		return K_DOWNARROW;	break;
-		case KEY_LEFT:		return K_LEFTARROW;	break;
-		case KEY_RIGHT:		return K_RIGHTARROW;	break;
-		
-		case KEY_F(1):		return K_F1;		break;
-		case KEY_F(2):		return K_F2;		break;
-		case KEY_F(3):		return K_F3;		break;
-		case KEY_F(4):		return K_F4;		break;
-		case KEY_F(5):		return K_F5;		break;
-		case KEY_F(6):		return K_F6;		break;
-		case KEY_F(7):		return K_F7;		break;
-		case KEY_F(8):		return K_F8;		break;
-		case KEY_F(9):		return K_F9;		break;
-		case KEY_F(10):		return K_F10;		break;
-		case KEY_F(11):		return K_F11;		break;
-		case KEY_F(12):		return K_F12;		break;
-				
-		default:
-		{	
-			if (key >= 'a' && key <= 'z')
-				return key;
+		case K_UPARROW:
+			EVNT_PushEvent (EVNT_MVUP, 0, 0, self);	
+		break;
 
-			if (key >= 'A' && key <= 'Z')
-				return key + 32;
-		}
+		case K_DOWNARROW:
+			EVNT_PushEvent (EVNT_MVDOWN, 0, 0, self);
+		break;
+
+		case K_LEFTARROW:
+			EVNT_PushEvent (EVNT_MVLEFT, 0, 0, self);
+		break;
+
+		case K_RIGHTARROW:
+			EVNT_PushEvent (EVNT_MVRIGHT, 0, 0, self);
+		break;
+
+		case 'q':
+		case 'Q':
+		case K_ESCAPE:
+			EVNT_PushEvent (EVNT_QUIT, 0, 0, 0);
+		break;
+
+		default:
+			ret = -1;
 		break;
 	}
-	return -1;
+	return ret;
 }
 
 void K_GetUserInput (void)
@@ -73,14 +87,13 @@ void K_GetUserInput (void)
 	
 	while (1)
 	{
-		ch = K_GetKey ();
+		ch = Sys_GetKey ();
 
 		if (ch == ERR)
 			return;
 	
-		ch = K_ProcessKey (ch);
-		
-		EVNT_PushEvent (EVNT_KEYPRESS, ch, 0);
+		ch = Sys_ProcessKey (ch);
+		ch = K_CreateKeyEvent (ch);
 	}
 }
 

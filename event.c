@@ -1,4 +1,7 @@
 #include "event.h"
+#include "sys.h"
+#include <stdlib.h>
+#include <stdio.h>
 
 event_t*	eventlist;
 
@@ -7,17 +10,16 @@ void EVNT_Init (void)
 	eventlist = 0;
 }
 
-void EVNT_PushEvent (int type, int arg1, int arg2)
+void EVNT_PushEvent (int type, int arg1, int arg2, entity_t* entity)
 {
+	//FIXME: replace with memory manager functions
 	event_t* 	newevent = malloc (sizeof(event_t));
 	
 	newevent->type = type;
 	newevent->arg1 = arg1;
 	newevent->arg2 = arg2;
-	newevent->next = NULL;
-	
-	if (eventlist)
-		newevent->next = eventlist;
+	newevent->entity = entity;
+	newevent->next = eventlist;
 
 	eventlist = newevent;
 }
@@ -77,19 +79,50 @@ int EVNT_GetNextEvent (event_t* ret)
 	ret->type = eventlist->type;
 	ret->arg1 = eventlist->arg1;
 	ret->arg2 = eventlist->arg2;
+	ret->entity = eventlist->entity;
 	ret->next = NULL;
 	
 	eventlist = toDel->next;
 	free (toDel);
 	
-	return 1;
+	return 0;
 }
 
-void EVNT_ProcessEvent (event_t event)
+void EVNT_ProcessEvent (event_t* event)
 {
-	switch (event.type)
+/*	FILE* fp = fopen ("log.txt", "a+");
+	fprintf (fp, "<NEWEVENT> <type: %d> <arg1: %d> <arg2: %d> <entity: %p> <entity.name: %s>\n", event->type, event->arg1, event->arg2, event->entity, event->entity->name);
+	fclose (fp);
+*/	switch (event->type)
 	{
+		case EVNT_KEYPRESS:
+			
+		break;
+		
+		case EVNT_JUMP:		break;
+		case EVNT_FIRE:		break;
+		case EVNT_MVUP:
+			event->entity->x.pf = event->entity->x.p0;
+			event->entity->y.pf = event->entity->y.p0 - event->entity->speed;
+		break;
+		case EVNT_MVDOWN:	break;
+		case EVNT_MVLEFT:	break;
+		case EVNT_MVRIGHT:	break;
+		case EVNT_BOOST:	break;
+		case EVNT_COLLISION:	break;
+		case EVNT_QUIT:
+			Sys_Shutdown ();
+		break;
+	}
+}
 
+void EVNT_ProcessEvents (void)
+{
+	event_t		event;
+
+	while (EVNT_GetNextEvent (&event) == 0)
+	{
+		EVNT_ProcessEvent (&event);
 	}
 }
 
