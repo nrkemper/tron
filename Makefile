@@ -58,11 +58,12 @@ build_release:
 		$(OBJ_DIR) \
 		$(BIN_DIR)
 	$(MAKE) $(TARGETS) CFLAGS=$(RELEASE_FLAGS)
-	$(LSCRIPT)
+	$(MAKE) link
 
 build_debug:
 
-
+link:	$(OBJS)
+	$(LSCRIPT)
 #=======================
 #        Objects  
 #=======================
