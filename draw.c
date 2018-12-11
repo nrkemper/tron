@@ -5,7 +5,7 @@
 //FIXME: need to make this better
 void D_DrawEntity (entity_t* entity)
 {
-	mvaddch (entity->y.pf, entity->x.pf, entity->icon);
+	mvaddch (entity->y.p0, entity->x.p0, entity->icon);
 }
 
 void D_DrawEntities (void)
