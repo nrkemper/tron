@@ -90,10 +90,7 @@ int EVNT_GetNextEvent (event_t* ret)
 
 void EVNT_ProcessEvent (event_t* event)
 {
-/*	FILE* fp = fopen ("log.txt", "a+");
-	fprintf (fp, "<NEWEVENT> <type: %d> <arg1: %d> <arg2: %d> <entity: %p> <entity.name: %s>\n", event->type, event->arg1, event->arg2, event->entity, event->entity->name);
-	fclose (fp);
-*/	switch (event->type)
+	switch (event->type)
 	{
 		case EVNT_KEYPRESS:
 			
@@ -107,7 +104,6 @@ void EVNT_ProcessEvent (event_t* event)
 			{
 				event->entity->x.pf = event->entity->x.p0;
 				event->entity->y.pf = event->entity->y.p0 - event->entity->speed;
-
 				event->entity->updated = 1;
 			}
 		break;
@@ -135,6 +131,7 @@ void EVNT_ProcessEvent (event_t* event)
 			{
 				event->entity->x.pf = event->entity->x.p0 + event->entity->speed;
 				event->entity->y.pf = event->entity->y.p0;
+				event->entity->updated = 1;
 			}
 		break;
 	
