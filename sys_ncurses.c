@@ -14,6 +14,7 @@
 void Sys_Init ()
 {
 	initscr ();
+	curs_set (FALSE);
 	K_Init ();
 	EVNT_Init ();
 	ENTY_Init ();
@@ -76,6 +77,12 @@ int Sys_ProcessKey (int key)
 		break;
 	}
 	return -1;
+}
+
+void Sys_GetMaxXY (int* x_ret, int* y_ret)
+{
+	*x_ret = COLS;
+	*y_ret = LINES;
 }
 
 double Sys_GetTime (void)
