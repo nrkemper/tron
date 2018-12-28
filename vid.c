@@ -1,70 +1,82 @@
-/*
-typedef struct vid_t
-{
-	int	width, height;
-	char**	buffer;
-}vid_t;
-*/
-#include "sys.h"
-#include "vid.h"
+#include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include "vid.h"
+#include "typedefs.h"
 
-vid_t		vid;
 
-int VID_Init (void)
+vid_t	vid;
+
+void VID_Init (void)
 {
-	int	x, y;
-
-	Sys_GetMaxXY (&x, &y);
-	return VID_CreateVGA (x, y);
+	vid.buffer	= 0;
+	vid.width	= 0;
+	vid.height	= 0;
+	vid.bpp		= 0;
 }
 
-int VID_CreateVGA (int width, int height)
+//FIXME: valid only for 24bpp
+void VID_CreateBuffer (void)
 {
-	int	j;
-
-	vid.width = width;
-	vid.height = height;
-
-	//FIXME: use memory manager instead of malloc
-	vid.buffer = (char**)malloc (width * sizeof (char*));
-	if (vid.buffer == NULL)
-		return -1;
-
-	for (j=0 ; j<width ; j++)
+	//FIXME: use memory manager here
+	switch (vid.bpp)
 	{
-		vid.buffer[j] = (char*)malloc (height * sizeof (char));
-		if (vid.buffer[j] == NULL)
-		{
-			vid.height = j + 1;
-			VID_DestroyVGA ();
-			return -1;
-		}
+		case 32:
+			vid.buffer = malloc (vid.height * vid.width * sizeof (pixel32_t));
+			memset (vid.buffer, 0, vid.width * vid.height * sizeof (pixel32_t));
+			break;
+
+		case 24:
+			vid.buffer = malloc (vid.height * vid.width * sizeof (pixel24_t));
+			memset (vid.buffer, 0, vid.width * vid.height * sizeof (pixel24_t));
+			break;
+
+		case 16:
+			vid.buffer = malloc (vid.height * vid.width * sizeof (pixel16_t));
+			memset (vid.buffer, 0, vid.width * vid.height * sizeof (pixel16_t));
+			break;
+
+		case 8:
+			vid.buffer = malloc (vid.height * vid.width * sizeof (pixel8_t));
+			memset (vid.buffer, 0, vid.width * vid.height * sizeof (pixel8_t));
+			break;
 	}
+}
+
+
+//FIXME: write the size of a WORD
+int VID_DumpBuffer (const char* destFile)
+{
+	FILE* fp = fopen (destFile, "w");
+	//FIXME: need to account for different BPP
+	int numBytes = vid.width * vid.height * sizeof (pixel32_t);
+	int cnt = 0;
+	//FIXME: need to write the actual pixels and need to account for different pixel types
+	char* vidbufp = (char*)vid.buffer;
+	if (fp == NULL)
+	{
+		return -1;
+	}
+
+	fprintf (fp, "Data Begin:'");
+	while (cnt < numBytes)
+	{
+		fprintf (fp, "%c", vidbufp[cnt]);
+		cnt++;
+	}
+	fprintf (fp, "':End\n");
 	return 0;
 }
 
-//FIXME: use mmanager for free function
-void VID_DestroyVGA (void)
+//FIXME: Should be Sys_QueryScreen () ????
+void VID_QueryScreen (void)
 {
-	int	j;
 
-	for (j=0 ; j<vid.width ; j++)
-		free (vid.buffer[j]);
-
-	free (vid.buffer);
-
-	vid.width = 0;
-	vid.height = 0;
 }
 
-int VID_Resize (int width, int height)
-{
-	VID_DestroyVGA ();
-	return VID_CreateVGA (width, height);
-}
 
+//FIXME: use memory manager here
 void VID_Shutdown (void)
 {
-	VID_DestroyVGA();
+	free (vid.buffer);
 }

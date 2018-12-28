@@ -1,24 +1,30 @@
 #include "draw.h"
-#include "entity.h"
-#include <ncurses.h>
+#include "vid.h"
+#include "d_bitmap.h"
+#include "d_line.h"
 
-//FIXME: need to make this better
-void D_DrawEntity (entity_t* entity)
+void D_Init (void)
 {
-	mvaddch (entity->y.p0, entity->x.p0, entity->icon);
-}
-
-void D_DrawEntities (void)
-{
-	entity_t*	p = entitylist;
-
-	while (p)
+	switch (vid.bpp)
 	{
-		D_DrawEntity (p);
-		p=p->next;
+		case 32:
+			D_DrawBitmap	= __DrawBitmap32;
+			D_DrawLine		= __DrawLine32;
+			break;
+
+		case 24:
+			D_DrawBitmap	= __DrawBitmap24;
+			D_DrawLine		= __DrawLine24;
+			break;
+
+		case 16:
+			D_DrawBitmap	= __DrawBitmap16;
+			D_DrawLine		= __DrawLine16;
+			break;
+
+		case 8:
+			D_DrawBitmap	= __DrawBitmap8;
+			D_DrawLine		= __DrawLine8;
+			break;
 	}
-}
-void D_UpdateScreen (void)
-{
-	refresh ();
 }
