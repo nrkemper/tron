@@ -102,7 +102,7 @@ int CALLBACK WinMain (HINSTANCE hInst, HINSTANCE hPrevInstance, LPSTR lpCmdLine,
 
 
 	//FIXME: for testing only
-	D_DrawLine (57, 235, 100, 30, &color);
+	D_DrawRect (-10, -10, 15, 15, &color);
 
 	ShowWindow (hwnd, lnCmdShow);
 	UpdateWindow (hwnd);

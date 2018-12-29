@@ -7,4 +7,5 @@
 void D_Init (void);
 extern void (*D_DrawBitmap) (int x, int y, bitmap_t* bitmap);
 extern void (*D_DrawLine) (int x0, int y0, int x1, int y1, void* color);
+extern void (*D_DrawRect) (int x, int y, int width, int height, void* bgColour);
 #endif
