@@ -4,6 +4,9 @@
 #include "vid.h"
 #include "wmanager.h"
 
+//FIXME: for testing only
+#include "typedefs.h"
+
 HINSTANCE	hInstance;
 int			nCmdShow;
 HWND		hwnd;
@@ -84,14 +87,26 @@ LRESULT CALLBACK WndProc (HWND lHwnd, UINT lMsg, WPARAM wParam, LPARAM lParam)
 
 int CALLBACK WinMain (HINSTANCE hInst, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int lnCmdShow)
 {
+	//FIXME: for testing only
+	pixel32_t color;
+	color.r = 23;
+	color.g = 95;
+	color.b = 231;
+	color.alpha = 0;
+
 	hInstance = hInst;
 	nCmdShow = lnCmdShow;
 	
 	WM_Init ();
 	D_Init ();
 
+
+	//FIXME: for testing only
+	D_DrawLine (57, 235, 100, 30, &color);
+
 	ShowWindow (hwnd, lnCmdShow);
 	UpdateWindow (hwnd);
+
 	while (1)
 	{
 		if (PeekMessage (&msg, hwnd, 0, 0, PM_REMOVE) > 0)
@@ -99,6 +114,14 @@ int CALLBACK WinMain (HINSTANCE hInst, HINSTANCE hPrevInstance, LPSTR lpCmdLine,
 			TranslateMessage (&msg);
 			DispatchMessage (&msg);
 		}
+
+		/*while (1)
+		{
+			if (fStartTime - baseTime >= refreshRate)
+				break;	
+		}
+		*/
+		UpdateWindow (hwnd);
 	}
 
 	return 0;

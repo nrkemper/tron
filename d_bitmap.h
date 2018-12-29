@@ -164,7 +164,6 @@ typedef struct bitmap_t
 
 extern int bmperror;
 
-extern void (*D_DrawBitmap) (int x, int y, bitmap_t* bitmap);
 //FIXME: instead of reading a pixel. Read three bytes. Also account for different bpp counts
 void PrintBinary (uint32_t* data);
 int MyLoadBitmap (bitmap_t* ret, const char* file);
